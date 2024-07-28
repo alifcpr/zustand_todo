@@ -4,3 +4,8 @@ interface ITodo {
   status: boolean;
   createdAt: Date;
 }
+
+interface IFilterList {
+  title: string;
+  value: string;
+}

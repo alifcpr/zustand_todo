@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 import toast from "react-hot-toast";
 
 type AddTodoFormProps = {
-  data: ITodo;
+  data?: ITodo;
 };
 
 const AddTodoForm = ({ data }: AddTodoFormProps) => {
