@@ -5,6 +5,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { v4 as uuidv4 } from "uuid";
 
 type SelectFilterProps = {
   filterList: IFilterList[];
@@ -39,7 +40,9 @@ const SelectFilter = ({ filterList, query }: SelectFilterProps) => {
         </SelectTrigger>
         <SelectContent>
           {filterList.map((filter) => (
-            <SelectItem value={filter.value}>{filter.title}</SelectItem>
+            <SelectItem key={uuidv4()} value={filter.value}>
+              {filter.title}
+            </SelectItem>
           ))}
         </SelectContent>
       </Select>
