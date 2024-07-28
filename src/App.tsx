@@ -20,7 +20,7 @@ const App = () => {
 
   // Filter by status Query
   if (statusQuery) {
-    todos = todos.filter((todo) => todo.status === Boolean(statusQuery));
+    todos = todos.filter((todo) => String(todo.status) === statusQuery);
   }
 
   return (
