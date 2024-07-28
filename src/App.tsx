@@ -1,3 +1,4 @@
+import TodoCart from "./components/TodoCart";
 import { Button } from "./components/ui/button";
 import { Input } from "./components/ui/input";
 import Mainlayout from "./layouts/Mainlayout";
@@ -7,7 +8,7 @@ import { v4 as uuidv4 } from "uuid";
 
 const App = () => {
   const [inputValue, setInputValue] = useState<string>("");
-  const { addTodo } = useTodoStore((state) => state);
+  const { addTodo, todos } = useTodoStore((state) => state);
 
   // handle create new Todo
   const handleCraeteTodo = () => {
@@ -43,6 +44,11 @@ const App = () => {
           placeholder="Write Your Todo..."
         />
         <Button onClick={handleCraeteTodo}>Add Todo</Button>
+      </div>
+      <div className="space-y-7 mt-8">
+        {todos.map((todo) => (
+          <TodoCart data={todo} key={uuidv4()} />
+        ))}
       </div>
     </Mainlayout>
   );
