@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
 
 type State = {
   todos: ITodo[];
@@ -11,27 +12,38 @@ type Actoins = {
   deleteTodo: (todoId: string) => void;
 };
 
-export const useTodoStore = create<State & Actoins>((set) => ({
-  todos: [],
-  addTodo: (todo) => set((state) => ({ todos: [...state.todos, todo] })),
-  changeStatus: (todoId) =>
-    set((state) => {
-      const todos = [...state.todos];
-      const todoIndex = todos.findIndex((todo) => todo.id === todoId);
-      todos[todoIndex].status = todos[todoIndex].status ? false : true;
-      return { todos };
+export const useTodoStore = create<
+  State & Actoins,
+  [["zustand/persist", State]]
+>(
+  persist(
+    (set) => ({
+      todos: [],
+      addTodo: (todo) => set((state) => ({ todos: [...state.todos, todo] })),
+      changeStatus: (todoId) =>
+        set((state) => {
+          const todos = [...state.todos];
+          const todoIndex = todos.findIndex((todo) => todo.id === todoId);
+          todos[todoIndex].status = todos[todoIndex].status ? false : true;
+          return { todos };
+        }),
+      editTodo: (todoId, title) =>
+        set((state) => {
+          const todos = [...state.todos];
+          const todoIndex = todos.findIndex((todo) => todo.id === todoId);
+          todos[todoIndex].title = title;
+          return { todos };
+        }),
+      deleteTodo: (todoId) =>
+        set((state) => {
+          const todos = [...state.todos];
+          const newTodos = todos.filter((todo) => todo.id !== todoId);
+          return { todos: newTodos };
+        }),
     }),
-  editTodo: (todoId, title) =>
-    set((state) => {
-      const todos = [...state.todos];
-      const todoIndex = todos.findIndex((todo) => todo.id === todoId);
-      todos[todoIndex].title = title;
-      return { todos };
-    }),
-  deleteTodo: (todoId) =>
-    set((state) => {
-      const todos = [...state.todos];
-      const newTodos = todos.filter((todo) => todo.id !== todoId);
-      return { todos: newTodos };
-    }),
-}));
+    {
+      name: "todos",
+      storage: createJSONStorage(() => localStorage),
+    }
+  )
+);
