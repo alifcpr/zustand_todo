@@ -4,18 +4,26 @@ import { Input } from "../ui/input";
 import { useTodoStore } from "@/store/store";
 import { v4 as uuidv4 } from "uuid";
 
-const AddTodoForm = () => {
-  const [inputValue, setInputValue] = useState<string>("");
-  const { addTodo } = useTodoStore();
+type AddTodoFormProps = {
+  data: ITodo;
+};
+
+const AddTodoForm = ({ data }: AddTodoFormProps) => {
+  const [inputValue, setInputValue] = useState<string>(data ? data.title : "");
+  const { addTodo, editTodo } = useTodoStore();
 
   // handle create new Todo
   const handleCraeteTodo = () => {
-    addTodo({
-      title: inputValue,
-      status: false,
-      createdAt: new Date(),
-      id: uuidv4(),
-    });
+    if (data) {
+      editTodo(data.id, inputValue);
+    } else {
+      addTodo({
+        title: inputValue,
+        status: false,
+        createdAt: new Date(),
+        id: uuidv4(),
+      });
+    }
     setInputValue("");
   };
 
@@ -40,7 +48,9 @@ const AddTodoForm = () => {
         className="text-md"
         placeholder="Write Your Todo..."
       />
-      <Button onClick={handleCraeteTodo}>Add Todo</Button>
+      <Button onClick={handleCraeteTodo}>
+        {data ? "Edit Todo" : "Add Todo"}
+      </Button>
     </div>
   );
 };
