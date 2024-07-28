@@ -29,6 +29,7 @@ const TodoCart = ({ data }: TodoCartProps) => {
     changeStatus(data.id);
   };
 
+  // handle delete todo
   const handleDeleteTodo = () => {
     deleteTodo(data.id);
   };
@@ -48,7 +49,7 @@ const TodoCart = ({ data }: TodoCartProps) => {
 
       <div
         className={`border relative p-4 rounded-md flex items-center justify-between shadow-sm ${
-          data.status ? "border-green-500" : "border-slate-400"
+          data.status ? "border-green-500" : "border-slate-300"
         }`}
       >
         <span className="absolute pointer-events-none px-2 top-0 left-2 bg-white -translate-y-1/2 text-xs">
